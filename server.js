@@ -3,7 +3,8 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
 
-app.use(express.bodyParser());
+const bodyParser = require('body-parser');
+app.use(bodyParser);
 
 function authenticate(username, password, req, res) {
 	var auth = req.get('Authorization');
