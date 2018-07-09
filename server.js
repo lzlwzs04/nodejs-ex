@@ -3,6 +3,8 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
 
+app.use(express.bodyParser());
+
 function authenticate(username, password, req, res) {
 	var auth = req.get('Authorization');
 	if (!auth) {
@@ -87,7 +89,7 @@ app.post('/v2',
 					responseBody += "<ns2:responsePayload>";
 					responseBody += "<ns2:status>200</ns2:status>";
 					responseBody += "<ns2:statusDate>" + new Date().toISOString() + "</ns2:statusDate>";
-					responseBody += "<ns2:statusDetails><![CDATA[" + req.rawBody + "]]></ns2:statusDetails>";
+					responseBody += "<ns2:statusDetails><![CDATA[" + req.body + "]]></ns2:statusDetails>";
 					responseBody += "</ns2:responsePayload>";
 					responseBody += "</ns2:ExternalEventResponse>";
 					responseBody += "</S:Body>";
@@ -169,19 +171,6 @@ app.get('/pagecount', function (req, res) {
   } else {
     res.send('{ pageCount: -1 }');
   }
-});
-
-app.use(function(req, res, next) {
-	req.rawBody = '';
-	req.setEncoding('utf8');
-
-	req.on('data', function(chunk) {
-		req.rawBody += chunk;
-	});
-
-	req.on('end', function() {
-		next();
-	});
 });
 
 // error handling
