@@ -3,8 +3,18 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
 
-const bodyParser = require('body-parser');
-app.use(bodyParser);
+app.use(function(req, res, next) {
+	req.rawBody = '';
+	req.setEncoding('utf8');
+
+	req.on('data', function(chunk) {
+		req.rawBody += chunk;
+	});
+
+	req.on('end', function() {
+		next();
+	});
+});
 
 function authenticate(username, password, req, res) {
 	var auth = req.get('Authorization');
@@ -90,7 +100,7 @@ app.post('/v2',
 					responseBody += "<ns2:responsePayload>";
 					responseBody += "<ns2:status>200</ns2:status>";
 					responseBody += "<ns2:statusDate>" + new Date().toISOString() + "</ns2:statusDate>";
-					responseBody += "<ns2:statusDetails><![CDATA[" + req.body + "]]></ns2:statusDetails>";
+					responseBody += "<ns2:statusDetails><![CDATA[" + req.rawBody + "]]></ns2:statusDetails>";
 					responseBody += "</ns2:responsePayload>";
 					responseBody += "</ns2:ExternalEventResponse>";
 					responseBody += "</S:Body>";
