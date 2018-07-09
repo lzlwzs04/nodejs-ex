@@ -171,6 +171,19 @@ app.get('/pagecount', function (req, res) {
   }
 });
 
+app.use(function(req, res, next) {
+	req.rawBody = '';
+	req.setEncoding('utf8');
+
+	req.on('data', function(chunk) {
+		req.rawBody += chunk;
+	});
+
+	req.on('end', function() {
+		next();
+	});
+});
+
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
