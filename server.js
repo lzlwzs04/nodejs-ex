@@ -143,7 +143,7 @@ app.post('/v3',
 					responseBody += "<ns1:statusDate>2017-01-01T00:00:00-01:00</ns1:statusDate>";
 					responseBody += "<ns1:statusDetails>Success</ns1:statusDetails>";
 					responseBody += "</ns1:responsePayload>";
-					responseBody += "</ns1:ExternalEventResponse></soap:Body></soap:Envelope>";
+					responseBody += "</ns1:responsePayload></soap:Body></soap:Envelope>";
 					res.setHeader('Content-Type', 'text/xml; charset=utf-8');
 					res.send(responseBody);
 				});
