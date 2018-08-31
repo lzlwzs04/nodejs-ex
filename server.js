@@ -147,6 +147,15 @@ app.post('/v3',
 					res.setHeader('Content-Type', 'text/xml; charset=utf-8');
 					res.send(responseBody);
 				});
+app.post('/v4',
+				function(req, res) {
+					authenticate('admin', 'pwd', req, res);
+					if (res.finished) {
+						return;
+					}
+					res.setHeader('Content-Type', 'text/xml; charset=utf-8');
+					res.status(204).send({});
+				});
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
